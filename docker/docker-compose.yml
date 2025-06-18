@@ -11,8 +11,8 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - ../postgres-data:/var/lib/postgresql/data   # volume для хранения данных, путь можно поменять
-      - ./init_scripts:/docker-entrypoint-initdb.d   # init-скрипты в твоём случае лежат рядом
+      - ../postgres-data:/var/lib/postgresql/data
+      - ./init_scripts:/docker-entrypoint-initdb.d
     working_dir: /docker-entrypoint-initdb.d
 
   auth-service:
