@@ -1,4 +1,4 @@
-docker/
+migrations/
 .git
 .idea
 postgres-data

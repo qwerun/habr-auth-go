@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/qwerun/habr-auth-go/api"
-	"github.com/qwerun/habr-auth-go/internal/db/postgres"
+	"github.com/qwerun/habr-auth-go/internal/handlers"
+	"github.com/qwerun/habr-auth-go/pkg/postgres"
 	"log"
 	"net/http"
 )
@@ -13,7 +13,7 @@ func main() {
 		log.Fatal(err)
 	}
 	explorer := postgres.NewExplorer(db)
-	handler, err := api.NewMux(explorer)
+	handler, err := handlers.NewMux(explorer)
 	if err != nil {
 		panic(err)
 	}

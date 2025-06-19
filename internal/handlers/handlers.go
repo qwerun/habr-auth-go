@@ -1,7 +1,7 @@
-package api
+package handlers
 
 import (
-	"github.com/qwerun/habr-auth-go/internal/db/postgres"
+	"github.com/qwerun/habr-auth-go/pkg/postgres"
 	"net/http"
 )
 
