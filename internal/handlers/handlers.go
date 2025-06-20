@@ -12,7 +12,7 @@ type Server struct {
 	explorer *postgres.Explorer
 }
 
-type User struct {
+type registerRequest struct {
 	Email        string `json:"email"`
 	PasswordHash string `json:"password"`
 	Nickname     string `json:"nickname"`
@@ -43,7 +43,7 @@ func onlyPOST(handler http.Handler) http.Handler {
 }
 
 func (s *Server) register(w http.ResponseWriter, r *http.Request) {
-	var req User
+	var req registerRequest
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
 		http.Error(w, "Bad JSON", http.StatusBadRequest)

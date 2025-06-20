@@ -10,7 +10,7 @@ import (
 	"github.com/go-ozzo/ozzo-validation/v4/is"
 )
 
-func (u *User) IsValid() error {
+func (u *registerRequest) IsValid() error {
 	if u.Email == "" || u.PasswordHash == "" || u.Nickname == "" {
 		return errors.New("Missing required fields")
 	}
@@ -26,14 +26,14 @@ func (u *User) IsValid() error {
 	return nil
 }
 
-func (u *User) validateEmail() error {
+func (u *registerRequest) validateEmail() error {
 	return validation.Validate(u.Email,
 		validation.Required,
 		is.Email,
 	)
 }
 
-func (u *User) validateNick() error {
+func (u *registerRequest) validateNick() error {
 	if len(u.Nickname) < 3 {
 		return errors.New("Nickname is short (Minimum 3 characters)")
 	}
@@ -62,7 +62,7 @@ func (u *User) validateNick() error {
 	return nil
 }
 
-func (u *User) validatePass() error {
+func (u *registerRequest) validatePass() error {
 	if len(u.PasswordHash) < 8 {
 		return errors.New("Password is short (Minimum 8 characters)")
 	}
