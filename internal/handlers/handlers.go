@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"github.com/qwerun/habr-auth-go/internal/auth"
 	"github.com/qwerun/habr-auth-go/pkg/postgres"
 	"net/http"
 	"strings"
@@ -52,6 +53,12 @@ func (s *Server) register(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+	hashed, err := auth.HashPassword(req.PasswordHash)
+	if err != nil {
+		http.Error(w, "Failed to hash password", http.StatusInternalServerError)
+		return
+	}
+	req.PasswordHash = hashed
 
 	response := req
 	if err = writeJSON(w, response, http.StatusOK); err != nil {
