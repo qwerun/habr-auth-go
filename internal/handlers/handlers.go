@@ -24,7 +24,6 @@ func NewMux(explorer *postgres.Explorer) (http.Handler, error) {
 	mux.HandleFunc("/api/v1/verify-email", server.defaults)
 	mux.HandleFunc("/api/v1/login", server.defaults)
 	mux.HandleFunc("/api/v1/password-reset", server.defaults)
-
 	return onlyPOST(mux), nil
 }
 

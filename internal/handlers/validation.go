@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"errors"
+	"fmt"
 	"strings"
 	"unicode"
 
@@ -33,23 +34,23 @@ func (u *User) validateEmail() error {
 }
 
 func (u *User) validateNick() error {
-	nickname := u.Nickname
-	if len(nickname) < 3 {
+	if len(u.Nickname) < 3 {
 		return errors.New("Nickname is short (Minimum 3 characters)")
 	}
-	if len(nickname) > 25 {
+	if len(u.Nickname) > 25 {
 		return errors.New("The nickname is too long")
 	}
 	allowedSumbols := "-_"
 	var hasLetter, hasDigit bool
-	for _, ch := range nickname {
+	for _, ch := range u.Nickname {
 		switch {
-		case unicode.IsLower(ch), unicode.IsUpper(ch):
+		case ch >= 'a' && ch <= 'z':
+			hasLetter = true
+		case ch >= 'A' && ch <= 'Z':
 			hasLetter = true
 		case unicode.IsDigit(ch):
 			hasDigit = true
 		case strings.ContainsRune(allowedSumbols, ch):
-
 		default:
 			return errors.New("The nickname can only contain Latin letters, numbers and symbols dashes and underlines")
 		}
@@ -62,25 +63,25 @@ func (u *User) validateNick() error {
 }
 
 func (u *User) validatePass() error {
-	password := u.PasswordHash
-	if len(password) < 8 {
+	if len(u.PasswordHash) < 8 {
 		return errors.New("Password is short (Minimum 8 characters)")
 	}
-	if len(password) > 64 {
+	if len(u.PasswordHash) > 64 {
 		return errors.New("The password is too long")
 	}
-	allowedSumbols := "()-+=%\""
+	allowedSumbols := "()*_-+=%\""
 	var hasLetter, hasDigit bool
-	for _, ch := range password {
+	for _, ch := range u.PasswordHash {
 		switch {
-		case unicode.IsLower(ch), unicode.IsUpper(ch):
+		case ch >= 'a' && ch <= 'z':
+			hasLetter = true
+		case ch >= 'A' && ch <= 'Z':
 			hasLetter = true
 		case unicode.IsDigit(ch):
 			hasDigit = true
 		case strings.ContainsRune(allowedSumbols, ch):
-
 		default:
-			return errors.New("The password can only contain Latin letters, numbers and symbols ()-+=%\"")
+			return errors.New(fmt.Sprintf("The password can only contain Latin letters, numbers and symbols %s", allowedSumbols))
 		}
 	}
 	if !hasLetter || !hasDigit {
