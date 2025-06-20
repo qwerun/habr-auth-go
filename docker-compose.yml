@@ -11,7 +11,7 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data
+      - auth-db-data:/var/lib/postgresql/data
       - ./migrations/init_scripts:/migrations-entrypoint-initdb.d
     working_dir: /migrations-entrypoint-initdb.d
 
@@ -30,3 +30,6 @@ services:
       DB_PORT: 5432
     ports:
       - "8081:8081"
+
+volumes:
+  auth-db-data:
