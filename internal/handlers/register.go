@@ -6,6 +6,7 @@ import (
 	"github.com/qwerun/habr-auth-go/internal/auth"
 	"github.com/qwerun/habr-auth-go/internal/models"
 	"github.com/qwerun/habr-auth-go/internal/repository/user_repository"
+	"log"
 	"net/http"
 )
 
@@ -13,6 +14,7 @@ func (s *Server) register(w http.ResponseWriter, r *http.Request) {
 	var req registerRequest
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
+		log.Printf("Bad JSON: %v", err)
 		http.Error(w, "Bad JSON", http.StatusBadRequest)
 		return
 	}
@@ -22,6 +24,7 @@ func (s *Server) register(w http.ResponseWriter, r *http.Request) {
 	}
 	hashed, err := auth.HashPassword(req.PasswordHash)
 	if err != nil {
+		log.Printf("Failed to hash password: %v", err)
 		http.Error(w, "Failed to hash password", http.StatusInternalServerError)
 		return
 	}
