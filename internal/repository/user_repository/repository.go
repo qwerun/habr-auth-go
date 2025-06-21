@@ -7,6 +7,8 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/qwerun/habr-auth-go/internal/models"
 	"log"
+	"math/rand"
+	"time"
 )
 
 var (
@@ -42,4 +44,15 @@ func (r *Repository) Create(user *models.User) (string, error) {
 		return "", fmt.Errorf("rie")
 	}
 	return id, nil
+}
+
+func (r *Repository) SetVerificationCode(email string) (int, error) {
+	ctx := context.Background()
+	code := rand.Intn(900000) + 100000
+	err := r.redisExplorer.RDB.Set(ctx, email, code, 10*time.Minute).Err()
+	if err != nil {
+		log.Printf("Could not set value in Redis: %v", err)
+		return 0, err
+	}
+	return code, nil
 }

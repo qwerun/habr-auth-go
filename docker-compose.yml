@@ -47,6 +47,7 @@ services:
       DB_NAME: authdb
       DB_PORT: 5432
       REDIS_PASSWORD: pass23j4j32j
+      REDIS_ADDR: redis:6379
     ports:
       - "8081:8081"
     depends_on:

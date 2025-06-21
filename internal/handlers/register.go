@@ -8,6 +8,7 @@ import (
 	"github.com/qwerun/habr-auth-go/internal/repository/user_repository"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 func (s *Server) register(w http.ResponseWriter, r *http.Request) {
@@ -43,7 +44,17 @@ func (s *Server) register(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-	req.Email = id
+
+	code, err := s.explorer.SetVerificationCode(req.Email)
+	if err != nil {
+		log.Printf("Failed to SetVerificationCode: %v", err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+	}
+
+	// Kafka - Здесь будет отправка сообщения в кафку
+
+	req.PasswordHash = strconv.Itoa(code) //заглушка,чтобы посмотреть сформированный код подтверждения
+	req.Email = id                        //заглушка id юзера буду возвращать в response
 
 	response := req
 

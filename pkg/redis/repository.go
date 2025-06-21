@@ -16,9 +16,10 @@ func NewRedisExplorer(rdb *rds.Client) *RedisExplorer {
 
 func NewRedisDB() (*rds.Client, error) {
 	dbPassword := os.Getenv("REDIS_PASSWORD")
+	dbAddr := os.Getenv("REDIS_ADDR")
 
 	rdb := rds.NewClient(&rds.Options{
-		Addr:     "redis:6379",
+		Addr:     dbAddr,
 		Password: dbPassword,
 		DB:       0,
 	})
