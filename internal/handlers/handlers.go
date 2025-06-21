@@ -1,12 +1,12 @@
 package handlers
 
 import (
-	"github.com/qwerun/habr-auth-go/pkg/postgres"
+	"github.com/qwerun/habr-auth-go/internal/repository/user_repository"
 	"net/http"
 )
 
 type Server struct {
-	explorer *postgres.Explorer
+	explorer *user_repository.Repository
 }
 
 type registerRequest struct {
@@ -15,7 +15,7 @@ type registerRequest struct {
 	Nickname     string `json:"nickname"`
 }
 
-func NewMux(explorer *postgres.Explorer) (http.Handler, error) {
+func NewMux(explorer *user_repository.Repository) (http.Handler, error) {
 	server := &Server{explorer: explorer}
 	mux := http.NewServeMux()
 	mux.HandleFunc("/api/v1/register", server.register)

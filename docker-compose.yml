@@ -11,9 +11,9 @@ services:
     ports:
       - "5433:5432"
     volumes:
+      - ./migrations/init_scripts:/docker-entrypoint-initdb.d
       - auth-db-data:/var/lib/postgresql/data
-      - ./migrations/init_scripts:/migrations-entrypoint-initdb.d
-    working_dir: /migrations-entrypoint-initdb.d
+
 
   auth-service:
     restart: always
