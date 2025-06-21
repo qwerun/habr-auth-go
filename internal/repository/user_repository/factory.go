@@ -1,11 +1,15 @@
 package user_repository
 
-import "github.com/qwerun/habr-auth-go/pkg/postgres"
+import (
+	"github.com/qwerun/habr-auth-go/pkg/postgres"
+	"github.com/qwerun/habr-auth-go/pkg/redis"
+)
 
 type Repository struct {
-	explorer *postgres.Explorer
+	explorer      *postgres.Explorer
+	redisExplorer *redis.RedisExplorer
 }
 
-func New(explorer *postgres.Explorer) *Repository {
-	return &Repository{explorer: explorer}
+func New(explorer *postgres.Explorer, redis *redis.RedisExplorer) *Repository {
+	return &Repository{explorer: explorer, redisExplorer: redis}
 }
