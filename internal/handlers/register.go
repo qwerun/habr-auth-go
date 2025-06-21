@@ -2,9 +2,10 @@ package handlers
 
 import (
 	"encoding/json"
+	"errors"
 	"github.com/qwerun/habr-auth-go/internal/auth"
 	"github.com/qwerun/habr-auth-go/internal/models"
-	"log"
+	"github.com/qwerun/habr-auth-go/internal/repository/user_repository"
 	"net/http"
 )
 
@@ -29,8 +30,14 @@ func (s *Server) register(w http.ResponseWriter, r *http.Request) {
 	user := models.NewUser(req.Email, req.PasswordHash, req.Nickname)
 	var id string
 	if id, err = s.explorer.Create(user); err != nil {
-		log.Print(err.Error())
-		http.Error(w, "Failed register", http.StatusInternalServerError)
+		switch {
+		case errors.Is(err, user_repository.ErrEmailAlreadyExists):
+			http.Error(w, err.Error(), http.StatusConflict)
+		case errors.Is(err, user_repository.ErrNicknameAlreadyExists):
+			http.Error(w, err.Error(), http.StatusConflict)
+		default:
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		}
 		return
 	}
 	req.Email = id
