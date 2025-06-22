@@ -1,16 +1,21 @@
-package handlers
+package dto
 
 import (
 	"errors"
 	"fmt"
+	validation "github.com/go-ozzo/ozzo-validation/v4"
+	"github.com/go-ozzo/ozzo-validation/v4/is"
 	"strings"
 	"unicode"
-
-	"github.com/go-ozzo/ozzo-validation/v4"
-	"github.com/go-ozzo/ozzo-validation/v4/is"
 )
 
-func (u *registerRequest) IsValid() error {
+type RegisterRequest struct {
+	Email        string `json:"email"`
+	PasswordHash string `json:"password"`
+	Nickname     string `json:"nickname"`
+}
+
+func (u *RegisterRequest) IsValid() error {
 	if u.Email == "" || u.PasswordHash == "" || u.Nickname == "" {
 		return errors.New("Missing required fields")
 	}
@@ -26,14 +31,14 @@ func (u *registerRequest) IsValid() error {
 	return nil
 }
 
-func (u *registerRequest) validateEmail() error {
+func (u *RegisterRequest) validateEmail() error {
 	return validation.Validate(u.Email,
 		validation.Required,
 		is.Email,
 	)
 }
 
-func (u *registerRequest) validateNick() error {
+func (u *RegisterRequest) validateNick() error {
 	if len(u.Nickname) < 3 {
 		return errors.New("Nickname is short (Minimum 3 characters)")
 	}
@@ -62,7 +67,7 @@ func (u *registerRequest) validateNick() error {
 	return nil
 }
 
-func (u *registerRequest) validatePass() error {
+func (u *RegisterRequest) validatePass() error {
 	if len(u.PasswordHash) < 8 {
 		return errors.New("Password is short (Minimum 8 characters)")
 	}

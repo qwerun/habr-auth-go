@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/qwerun/habr-auth-go/internal/auth"
+	"github.com/qwerun/habr-auth-go/internal/dto"
 	"github.com/qwerun/habr-auth-go/internal/models"
 	"github.com/qwerun/habr-auth-go/internal/repository/user_repository"
 	"log"
@@ -12,7 +13,7 @@ import (
 )
 
 func (s *Server) register(w http.ResponseWriter, r *http.Request) {
-	var req registerRequest
+	var req dto.RegisterRequest
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
 		log.Printf("Bad JSON: %v", err)

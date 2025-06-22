@@ -9,12 +9,6 @@ type Server struct {
 	explorer *user_repository.Repository
 }
 
-type registerRequest struct {
-	Email        string `json:"email"`
-	PasswordHash string `json:"password"`
-	Nickname     string `json:"nickname"`
-}
-
 func NewMux(explorer *user_repository.Repository) (http.Handler, error) {
 	server := &Server{explorer: explorer}
 	mux := http.NewServeMux()
